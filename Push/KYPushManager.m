@@ -116,51 +116,51 @@
     // 处理推送消息
     // 默认设置为0
 //    [UIApplication sharedApplication].applicationIconBadgeNumber = 0;
-//    
-//    
-//    NSLog(@"userinfo:%@",userInfo);
-//    NSDictionary *dic = [userInfo objectForKey:@"aps"];
-//    NSLog(@"收到推送消息:%@",[[userInfo objectForKey:@"aps"] objectForKey:@"alert"]);
-//    
-//    NSString *title = [dic objectForKey:@"title"];
-//    NSString *message = [dic objectForKey:@"alert"];
-//    NSString *ensure = [dic objectForKey:@"ensure"];
-//    NSString *cancel = [dic objectForKey:@"cancel"];
-//    if(title && ensure.length ==0){
-//        title = nil;
-//    }
-//    if(ensure && ensure.length ==0){
-//        ensure = nil;
-//    }
-//    if(cancel && cancel.length ==0){
-//        cancel = nil;
-//    }
-//    
-//    NSNumber *num = [dic objectForKey:@"isShow"];
-//    
-//    if(num.intValue==0){
-//        return;
-//    }
-//    UIAlertView *alertview = [[UIAlertView alloc] initWithTitle:title message:message delegate:self cancelButtonTitle:cancel otherButtonTitles:ensure, nil];
-//    [alertview show];
+    
+    
+    NSLog(@"userinfo:%@",userInfo);
+    NSDictionary *dic = [userInfo objectForKey:@"aps"];
+    NSLog(@"收到推送消息:%@",[[userInfo objectForKey:@"aps"] objectForKey:@"alert"]);
+    
+    NSString *title = [dic objectForKey:@"title"];
+    NSString *message = [dic objectForKey:@"alert"];
+    NSString *ensure = [dic objectForKey:@"ensure"];
+    NSString *cancel = [dic objectForKey:@"cancel"];
+    if(title && ensure.length ==0){
+        title = nil;
+    }
+    if(ensure && ensure.length ==0){
+        ensure = nil;
+    }
+    if(cancel && cancel.length ==0){
+        cancel = nil;
+    }
+    
+    NSNumber *num = [dic objectForKey:@"isShow"];
+    
+    if(num.intValue==0){
+        return;
+    }
+    UIAlertView *alertview = [[UIAlertView alloc] initWithTitle:title message:message delegate:self cancelButtonTitle:cancel otherButtonTitles:ensure, nil];
+    [alertview show];
     
     
 
-    if (self.application.applicationState == UIApplicationStateActive) {
-        UILocalNotification *localNotification = [[UILocalNotification alloc] init];
-        localNotification.userInfo = userInfo;
-        localNotification.soundName = UILocalNotificationDefaultSoundName;
-        localNotification.alertBody = [[userInfo objectForKey:@"aps"] objectForKey:@"alert"];
-        
-        localNotification.timeZone = [NSTimeZone defaultTimeZone]; // 使用本地时区
-        localNotification.fireDate = [[NSDate date] dateByAddingTimeInterval:5.0];
-        
-        [[UIApplication sharedApplication] scheduleLocalNotification:localNotification];
-    }
-    //如果是在后台挂起，用户点击进入是UIApplicationStateInactive这个状态
-    else if (self.application.applicationState == UIApplicationStateInactive){
-        //......
-    }
+//    if (self.application.applicationState == UIApplicationStateActive) {
+//        UILocalNotification *localNotification = [[UILocalNotification alloc] init];
+//        localNotification.userInfo = userInfo;
+//        localNotification.soundName = UILocalNotificationDefaultSoundName;
+//        localNotification.alertBody = [[userInfo objectForKey:@"aps"] objectForKey:@"alert"];
+//        
+//        localNotification.timeZone = [NSTimeZone defaultTimeZone]; // 使用本地时区
+//        localNotification.fireDate = [[NSDate date] dateByAddingTimeInterval:5.0];
+//        
+//        [[UIApplication sharedApplication] scheduleLocalNotification:localNotification];
+//    }
+//    //如果是在后台挂起，用户点击进入是UIApplicationStateInactive这个状态
+//    else if (self.application.applicationState == UIApplicationStateInactive){
+//        //......
+//    }
 }
 
 
@@ -209,25 +209,19 @@
         NSDate *currentDate   = [NSDate date];
         notification.timeZone = [NSTimeZone defaultTimeZone]; // 使用本地时区
         notification.fireDate = [currentDate dateByAddingTimeInterval:5.0];
-        
         // 设置重复间隔
         notification.repeatInterval = kCFCalendarUnitDay;
-        
         // 设置提醒的文字内容
         notification.alertBody   = @"Wake up, man";
         notification.alertAction = NSLocalizedString(@"起床了", nil);
-        
         // 通知提示音 使用默认的
         notification.soundName= UILocalNotificationDefaultSoundName;
-        
         // 设置应用程序右上角的提醒个数
         notification.applicationIconBadgeNumber++;
-        
         // 设定通知的userInfo，用来标识该通知
         NSMutableDictionary *aUserInfo = [[NSMutableDictionary alloc] init];
 //        aUserInfo[kLocalNotificationID] = @"LocalNotificationID";
         notification.userInfo = aUserInfo;
-        
         // 将通知添加到系统中
         [[UIApplication sharedApplication] scheduleLocalNotification:notification];
     }

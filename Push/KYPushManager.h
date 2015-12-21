@@ -8,10 +8,15 @@
 
 #import <UIKit/UIKit.h>
 
+extern NSString *const KYHASNOTIFICATION;   //has notification
+extern NSString *const KYPUSHNOTIFICATION;  //push notification
+
+
 @interface KYPushManager : NSObject
 
 + (KYPushManager *)shareInstance;
 
+@property(nonatomic,readwrite) BOOL hasNotice;
 
 - (void)setupWithApplication:(UIApplication *)application andOption:(NSDictionary *)launchingOption;
 
@@ -30,4 +35,8 @@
 - (void)receiveLocalNotification:(NSDictionary *)localInfo;
 
 - (void)localNotificationOne;
+
+#pragma mark - Notification Handle
+- (void)isRead;
+
 @end

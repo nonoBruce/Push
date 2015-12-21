@@ -78,7 +78,7 @@
 #pragma mark - local notification
 
 - (void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification {
-    [[KYPushManager shareInstance] receiveLocalNotification:notification];
+    [[KYPushManager shareInstance] receiveLocalNotification:notification.userInfo];
 }
 
 @end

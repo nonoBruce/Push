@@ -9,7 +9,8 @@
 #import "KYUserDefault.h"
 
 
-NSString *const KYNOTIFICATIONDEFAULT  = @"KYNOTIFICATIONDEFAULT";
+NSString *const KYNOTIFICATIONDEFAULT           = @"KYNOTIFICATIONDEFAULT";
+NSString *const KYHASPUSHNOTIVICATIONDEFAULT    = @"KYHASPUSHNOTIVICATIONDEFAULT";//是否有推送提示
 
 
 @implementation KYUserDefault
@@ -70,5 +71,16 @@ NSString *const KYNOTIFICATIONDEFAULT  = @"KYNOTIFICATIONDEFAULT";
     [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
+#pragma mark - 是否有推送
+- (void)saveHasNoticeToDefault:(BOOL)hasNotice{
+    [[NSUserDefaults standardUserDefaults] setBool:hasNotice forKey:KYHASPUSHNOTIVICATIONDEFAULT];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+
+}
+
+- (BOOL )getHasNoticeFromDefault{
+    BOOL hasNotice = [[NSUserDefaults standardUserDefaults] boolForKey:KYHASPUSHNOTIVICATIONDEFAULT];
+    return hasNotice;
+}
 
 @end

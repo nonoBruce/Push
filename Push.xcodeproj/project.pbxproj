@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		3230E4DA1C23A7BA005B1616 /* Readme.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 3230E4D91C23A7BA005B1616 /* Readme.rtf */; };
 		325452AF1C2134B200B6E837 /* KYPushManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 325452AE1C2134B200B6E837 /* KYPushManager.m */; };
+		3257F2751C27DC6800D72317 /* NoticeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3257F2741C27DC6800D72317 /* NoticeViewController.m */; };
 		32672D5C1C1E76F800265683 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 32672D5B1C1E76F800265683 /* main.m */; };
 		32672D5F1C1E76F800265683 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 32672D5E1C1E76F800265683 /* AppDelegate.m */; };
 		32672D621C1E76F800265683 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32672D611C1E76F800265683 /* ViewController.m */; };
@@ -23,6 +24,8 @@
 		3230E4D91C23A7BA005B1616 /* Readme.rtf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.rtf; path = Readme.rtf; sourceTree = "<group>"; };
 		325452AD1C2134B200B6E837 /* KYPushManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KYPushManager.h; sourceTree = "<group>"; };
 		325452AE1C2134B200B6E837 /* KYPushManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KYPushManager.m; sourceTree = "<group>"; };
+		3257F2731C27DC6800D72317 /* NoticeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NoticeViewController.h; sourceTree = "<group>"; };
+		3257F2741C27DC6800D72317 /* NoticeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NoticeViewController.m; sourceTree = "<group>"; };
 		32672D571C1E76F800265683 /* Push.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Push.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		32672D5B1C1E76F800265683 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		32672D5D1C1E76F800265683 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -74,6 +77,8 @@
 				32672D5E1C1E76F800265683 /* AppDelegate.m */,
 				32672D601C1E76F800265683 /* ViewController.h */,
 				32672D611C1E76F800265683 /* ViewController.m */,
+				3257F2731C27DC6800D72317 /* NoticeViewController.h */,
+				3257F2741C27DC6800D72317 /* NoticeViewController.m */,
 				32672D631C1E76F800265683 /* Main.storyboard */,
 				32672D661C1E76F800265683 /* Assets.xcassets */,
 				32672D681C1E76F800265683 /* LaunchScreen.storyboard */,
@@ -97,10 +102,10 @@
 				3230E4D91C23A7BA005B1616 /* Readme.rtf */,
 				325452AD1C2134B200B6E837 /* KYPushManager.h */,
 				325452AE1C2134B200B6E837 /* KYPushManager.m */,
-				329D8BFB1C2019B90007110A /* KYUserDefault.h */,
-				329D8BFC1C2019B90007110A /* KYUserDefault.m */,
 				329D8BFF1C201CD80007110A /* PushTokenModel.h */,
 				329D8C001C201CD80007110A /* PushTokenModel.m */,
+				329D8BFB1C2019B90007110A /* KYUserDefault.h */,
+				329D8BFC1C2019B90007110A /* KYUserDefault.m */,
 			);
 			name = PushManager;
 			sourceTree = "<group>";
@@ -176,6 +181,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3257F2751C27DC6800D72317 /* NoticeViewController.m in Sources */,
 				32672D621C1E76F800265683 /* ViewController.m in Sources */,
 				329D8BFD1C2019B90007110A /* KYUserDefault.m in Sources */,
 				329D8C011C201CD80007110A /* PushTokenModel.m in Sources */,

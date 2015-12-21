@@ -7,19 +7,23 @@
 //
 
 #define  NOTIFICATIONUSERDEFAULT   @"NOTIFICATIONUSERDEFAULT"
-#define  SENDDEVICETOKENURL        @"http://172.16.230.164/shop/index.php/PushService/PushUserInfo/tokenDevice"
+#define  SENDDEVICETOKENURL        @"http://172.16.230.165/shop/index.php/PushService/PushUserInfo/tokenDevice"
 
 
 #import "KYPushManager.h"
 #import "KYUserDefault.h"
 
-@interface KYPushManager()
+@interface KYPushManager()<UIAlertViewDelegate>
 @property(nonatomic, strong) UIApplication *application;
 
 @end
 
+NSString *const KYHASNOTIFICATION               = @"KYHASNOTIFICATION";
+NSString *const KYPUSHNOTIFICATION              = @"KYPUSHNOTIFICATION";
+
 
 @implementation KYPushManager
+
 
 + (KYPushManager *)shareInstance {
     
@@ -31,16 +35,18 @@
     return mInstance;
 }
 
+- (instancetype)init{
+    if(self = [super init]){
+    }
+    
+    return self;
+}
+
 #pragma mark - push
 
 - (void)setupWithApplication:(UIApplication *)application andOption:(NSDictionary *)launchingOption {
     self.application = application;
     [self initPushManager:application];
-    
-    if([UIApplication sharedApplication].applicationIconBadgeNumber >0){
-        [UIApplication sharedApplication].applicationIconBadgeNumber = 0;
-    }
-
 }
 
 - (void)initPushManager:(UIApplication *)application{
@@ -55,8 +61,6 @@
         [application registerForRemoteNotificationTypes:(UIRemoteNotificationTypeBadge | UIRemoteNotificationTypeAlert | UIRemoteNotificationTypeSound)];
     }
     
-    
-
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(kyActive:)
                                                  name:UIApplicationDidBecomeActiveNotification object:application];
 }
@@ -64,6 +68,13 @@
 - (void)kyActive:(UIApplication *)application{
     if([UIApplication sharedApplication].applicationIconBadgeNumber >0){
         [UIApplication sharedApplication].applicationIconBadgeNumber = 0;
+        [[KYUserDefault shareInstance] saveHasNoticeToDefault:YES];
+    }
+    self.hasNotice = [[KYUserDefault shareInstance] getHasNoticeFromDefault] ;
+    
+    if(self.hasNotice){
+        //push notification -> has notification
+        [[NSNotificationCenter defaultCenter] postNotificationName:KYHASNOTIFICATION object:nil];
     }
 
 }
@@ -109,8 +120,6 @@
     
 }
 
-//- (void)re
-
 // handle notification recieved
 - (void)receiveRemoteNotification:(NSDictionary *)userInfo {
     // 处理推送消息
@@ -118,49 +127,57 @@
 //    [UIApplication sharedApplication].applicationIconBadgeNumber = 0;
     
     
-    NSLog(@"userinfo:%@",userInfo);
-    NSDictionary *dic = [userInfo objectForKey:@"aps"];
-    NSLog(@"收到推送消息:%@",[[userInfo objectForKey:@"aps"] objectForKey:@"alert"]);
-    
-    NSString *title = [dic objectForKey:@"title"];
-    NSString *message = [dic objectForKey:@"alert"];
-    NSString *ensure = [dic objectForKey:@"ensure"];
-    NSString *cancel = [dic objectForKey:@"cancel"];
-    if(title && ensure.length ==0){
-        title = nil;
-    }
-    if(ensure && ensure.length ==0){
-        ensure = nil;
-    }
-    if(cancel && cancel.length ==0){
-        cancel = nil;
-    }
-    
-    NSNumber *num = [dic objectForKey:@"isShow"];
-    
-    if(num.intValue==0){
-        return;
-    }
-    UIAlertView *alertview = [[UIAlertView alloc] initWithTitle:title message:message delegate:self cancelButtonTitle:cancel otherButtonTitles:ensure, nil];
-    [alertview show];
+//    NSLog(@"userinfo:%@",userInfo);
+//    NSDictionary *dic = [userInfo objectForKey:@"aps"];
+//    NSLog(@"收到推送消息:%@",[[userInfo objectForKey:@"aps"] objectForKey:@"alert"]);
+//    
+//    NSString *title = [dic objectForKey:@"title"];
+//    NSString *message = [dic objectForKey:@"alert"];
+//    NSString *ensure = [dic objectForKey:@"ensure"];
+//    NSString *cancel = [dic objectForKey:@"cancel"];
+//    if(title && ensure.length ==0){
+//        title = nil;
+//    }
+//    if(ensure && ensure.length ==0){
+//        ensure = nil;
+//    }
+//    if(cancel && cancel.length ==0){
+//        cancel = nil;
+//    }
+//    
+//    NSNumber *num = [dic objectForKey:@"isShow"];
+//    
+//    if(num.intValue==0){
+//        return;
+//    }
+//    UIAlertView *alertview = [[UIAlertView alloc] initWithTitle:title message:message delegate:self cancelButtonTitle:cancel otherButtonTitles:ensure, nil];
+//    alertview.tag = 1002;
+//    [alertview show];
     
     
 
-//    if (self.application.applicationState == UIApplicationStateActive) {
-//        UILocalNotification *localNotification = [[UILocalNotification alloc] init];
-//        localNotification.userInfo = userInfo;
-//        localNotification.soundName = UILocalNotificationDefaultSoundName;
-//        localNotification.alertBody = [[userInfo objectForKey:@"aps"] objectForKey:@"alert"];
-//        
-//        localNotification.timeZone = [NSTimeZone defaultTimeZone]; // 使用本地时区
-//        localNotification.fireDate = [[NSDate date] dateByAddingTimeInterval:5.0];
-//        
-//        [[UIApplication sharedApplication] scheduleLocalNotification:localNotification];
-//    }
-//    //如果是在后台挂起，用户点击进入是UIApplicationStateInactive这个状态
-//    else if (self.application.applicationState == UIApplicationStateInactive){
-//        //......
-//    }
+    if (self.application.applicationState == UIApplicationStateActive) {
+        //修改图标-》红点显示
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Hello" message:@"Welcome!" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"Cancle", nil];
+        alert.tag = 1001;
+        [alert show];
+        NSLog(@"UIApplicationStateActive");
+    }
+    //如果是在后台挂起，用户点击进入是UIApplicationStateInactive这个状态
+    else if (self.application.applicationState == UIApplicationStateInactive){
+        //修改图标-》红点显示
+        
+        NSLog(@"UIApplicationStateActive");
+        [[NSNotificationCenter defaultCenter] postNotificationName:KYPUSHNOTIFICATION object:nil];
+
+    }
+    else if (self.application.applicationState == UIApplicationStateBackground){
+        //修改图标-》红点显示
+        
+        NSLog(@"UIApplicationStateActive");
+//        [[NSNotificationCenter defaultCenter] postNotificationName:KYPUSHNOTIFICATION object:nil];
+
+    }
 }
 
 
@@ -196,9 +213,17 @@
 #pragma mark - localNotification
 
 - (void)receiveLocalNotification:(NSDictionary *)localInfo{
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Hello" message:@"welcome" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-    [alert show];
-    NSLog(@"receive local notification");
+    if (self.application.applicationState == UIApplicationStateActive) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Hello" message:@"Welcome!" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"Cancle", nil];
+        alert.tag = 1001;
+        [alert show];
+        
+        NSLog(@"receive local notification");
+    }else{
+        [[NSNotificationCenter defaultCenter] postNotificationName:KYPUSHNOTIFICATION object:nil];
+
+    }
+    
 }
 
 - (void)localNotificationOne{
@@ -209,17 +234,12 @@
         NSDate *currentDate   = [NSDate date];
         notification.timeZone = [NSTimeZone defaultTimeZone]; // 使用本地时区
         notification.fireDate = [currentDate dateByAddingTimeInterval:5.0];
-        // 设置重复间隔
-        notification.repeatInterval = kCFCalendarUnitDay;
-        // 设置提醒的文字内容
-        notification.alertBody   = @"Wake up, man";
-        notification.alertAction = NSLocalizedString(@"起床了", nil);
-        // 通知提示音 使用默认的
-        notification.soundName= UILocalNotificationDefaultSoundName;
-        // 设置应用程序右上角的提醒个数
-        notification.applicationIconBadgeNumber++;
-        // 设定通知的userInfo，用来标识该通知
-        NSMutableDictionary *aUserInfo = [[NSMutableDictionary alloc] init];
+//        notification.repeatInterval = kCFCalendarUnitDay;        // 设置重复间隔
+        notification.alertBody   = @"come on ";        // 设置提醒的文字内容
+        notification.alertAction = NSLocalizedString(@"will", nil);
+        notification.soundName= UILocalNotificationDefaultSoundName;// 通知提示音 使用默认的
+        notification.applicationIconBadgeNumber++;// 设置应用程序右上角的提醒个数
+        NSMutableDictionary *aUserInfo = [[NSMutableDictionary alloc] init];// 设定通知的userInfo，用来标识该通知
 //        aUserInfo[kLocalNotificationID] = @"LocalNotificationID";
         notification.userInfo = aUserInfo;
         // 将通知添加到系统中
@@ -227,4 +247,43 @@
     }
 }
 
+#pragma mark - Notification Handle
+- (void)isRead {
+    [[KYUserDefault shareInstance] saveHasNoticeToDefault:NO];
+    self.hasNotice = NO;
+    [UIApplication sharedApplication].applicationIconBadgeNumber = 0;
+}
+
+
+#pragma mark - delegate 
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+    switch (alertView.tag) {
+        case 1001:{//本地通知
+            switch (buttonIndex) {
+                case 0:{//跳转
+                    //has notification -> jump to  notification viewController
+                    [[NSNotificationCenter defaultCenter] postNotificationName:KYPUSHNOTIFICATION object:nil];
+                    break;
+                }
+                default:
+                    break;
+            }
+            break;
+        }
+        case 1002:{//本地通知
+            switch (buttonIndex) {
+                case 0:{//跳转
+                    //has notification -> jump to  notification viewController
+                    [[NSNotificationCenter defaultCenter] postNotificationName:KYPUSHNOTIFICATION object:nil];
+                    break;
+                }
+                default:
+                    break;
+            }
+            break;
+        }
+        default:
+            break;
+    }
+}
 @end

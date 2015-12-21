@@ -11,6 +11,7 @@
 //目的是判断本地的deviceToken是否发生了变化，如果变化了，就上传新的deviceToken替换服务器上旧的token
 
 extern NSString * const KYNOTIFICATIONDEFAULT;
+extern NSString * const KYHASPUSHNOTIVICATIONDEFAULT;//是否有推送提示
 
 @interface KYUserDefault : NSObject
 
@@ -19,7 +20,6 @@ extern NSString * const KYNOTIFICATIONDEFAULT;
 - (void)setDefault;
 
 - (void)initUserDefaults:(NSDictionary *)dic;
-
 
 #pragma mark - DeviceToken
 
@@ -30,5 +30,11 @@ extern NSString * const KYNOTIFICATIONDEFAULT;
 - (PushTokenModel *)getDeviceModelFromDefault;
 
 - (void)deleteDeviceModelDefault;
+
+
+#pragma mark - 是否有推送
+- (void)saveHasNoticeToDefault:(BOOL)hasNotice;
+
+- (BOOL)getHasNoticeFromDefault;
 
 @end
